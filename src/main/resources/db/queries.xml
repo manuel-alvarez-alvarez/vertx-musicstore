@@ -96,6 +96,10 @@ ORDER BY ab.title
 INSERT INTO users (username, password, password_salt) VALUES (?, ?, ?)
   ]]>
   </entry>
+  <entry key="updateUser"><![CDATA[
+UPDATE users SET password = ? WHERE username = ? or username = ?
+  ]]>
+  </entry>
   <entry key="authenticateUser"><![CDATA[
 SELECT
   password,

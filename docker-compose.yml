@@ -2,6 +2,9 @@ version: '2'
 services:
   vertx-musicstore:
     build: .
+    volumes:
+      - /Users/Manuel/Dev/licenses/main:/hdiv
+      - /Users/Manuel/Dev/workspace/hdiv-enterprise/hdiv-ee-agent/target/hdiv-ee-agent.jar:/hdiv/hdiv-ee-agent.jar
     ports:
       - "8080:8080"
     depends_on:

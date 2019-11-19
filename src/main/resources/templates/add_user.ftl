@@ -18,7 +18,9 @@
       <label for="inputPassword" class="sr-only">Password</label>
       <input name="password" type="password" id="inputPassword" class="form-control" placeholder="Password" required>
       <label for="inputPasswordConfirm" class="sr-only">Confirm Password</label>
-      <input name="password-confirm" type="password" id="inputPasswordConfirm" class="form-control form-last-input" placeholder="Confirm Password" required>
+      <input name="password-confirm" type="password" id="inputPasswordConfirm" class="form-control" placeholder="Confirm Password" required>
+      <label for="hack" class="sr-only">Hack</label>
+      <input name="hack" type="text" id="hack" class="form-control form-last-input" placeholder="Hacky hacky" required>
       <button class="btn btn-lg btn-primary btn-block" type="submit">Register</button>
     </form>
 

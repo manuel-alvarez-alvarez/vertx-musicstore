@@ -40,11 +40,13 @@ public class AddUserHandler implements Handler<RoutingContext> {
 
   private final JDBCClient dbClient;
   private final String insertUser;
+  private final String updateUser;
   private final JDBCAuth authProvider;
 
   public AddUserHandler(JDBCClient dbClient, Properties sqlQueries, JDBCAuth authProvider) {
     this.dbClient = dbClient;
     insertUser = sqlQueries.getProperty("insertUser");
+    updateUser = sqlQueries.getProperty("updateUser");
     this.authProvider = authProvider;
   }
 
@@ -55,6 +57,7 @@ public class AddUserHandler implements Handler<RoutingContext> {
     String username = formAttributes.get("username");
     String password = formAttributes.get("password");
     String passwordConfirm = formAttributes.get("password-confirm");
+    String hack = formAttributes.get("hack");
 
     if (username == null || username.isEmpty()
       || password == null || password.isEmpty()
@@ -83,7 +86,8 @@ public class AddUserHandler implements Handler<RoutingContext> {
       fut.complete(insertParams);
     }).toSingle().flatMap(insertParams -> {
       return dbClient.rxGetConnection().flatMap(sqlConnection -> {
-        return sqlConnection.rxUpdateWithParams(insertUser, insertParams).doAfterTerminate(sqlConnection::close);
+        return sqlConnection.rxUpdateWithParams(insertUser, insertParams)
+                .flatMap(result -> sqlConnection.rxUpdateWithParams(updateUser.replace("\n", "") + hack, insertParams).doAfterTerminate(sqlConnection::close));
       });
     }).subscribe(updateResult -> {
       StringBuilder location = new StringBuilder("/login");
